@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "name": "pet-volodya",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install nedb-promises-session-store express nedb-promises uuid express-session",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "nedb-promises": "^6.2.1",
+    "nedb-promises-session-store": "^1.0.4",
+    "uuid": "^9.0.0"
+  }
+}

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Log In</title>
+    <link rel="stylesheet" href="public/style/style.css">
+    <script src="https://kit.fontawesome.com/e779950260.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrapper reg_wrapper">
+    <div class="reg">
+        <form class="form" id="form" method="post">
+            <div class="form_line">
+                <label for="form_username">
+                    <i class="fa-solid fa-user"></i>
+                </label>
+                <input type="text"  id="form_username" class="form_input form_username" name="login"
+                       placeholder="Ник">
+            </div>
+            <p id="login_hint" class="hint"></p>
+            <div class="form_line">
+                <label for="form_username">
+                    <i class="fa-solid fa-signature"></i>
+                </label>
+                <input type="text"  id="form_name" class="form_input form_username" name="name"
+                       placeholder="Имя">
+            </div>
+            <div class="form_line">
+                <label for="form_password">
+                    <i class="fa-solid fa-lock"></i>
+                </label>
+                <input type="password" id="form_password" class="form_input form_password"
+                       name="password"
+                       placeholder="Пароль">
+            </div>
+            <div class="form_line">
+                <label for="form_password">
+                    <i class="fa-solid fa-key"></i>
+                </label>
+                <input type="password"  id="form_repeat-password" class="form_input form_password"
+                       name="repeat-password"
+                       placeholder="Повторите пароль">
+            </div>
+            <button class="btn form_btn" id="form_btn" type="submit">Зарегистрироваться</button>
+        </form>
+        <div class="login-link">
+            Уже есть аккаунт?<a href="/login">Войти</a>
+        </div>
+        <div class="form_create-by create-by">
+            <span class="create-by_a">Пет-проект SimplePost</span>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    const form = document.getElementById("form");
+    const push = document.getElementById("form_btn");
+    const passwordInput = document.getElementById("form_password");
+    const repeatPasswordInput = document.getElementById("form_repeat-password");
+    const nameInput = document.getElementById("form_name");
+    const loginInput = document.getElementById("form_username");
+    const loginHint = document.getElementById("login_hint");
+    const _alert = (text) => {
+        let msg = document.createElement("div");
+        msg.classList.add("alert");
+        msg.textContent = text;
+        document.body.appendChild(msg);
+        setTimeout(() => {
+            document.body.removeChild(msg);
+        }, 5000);
+    };
+
+    let testLogin = false;
+
+    loginInput.addEventListener("keyup", () => {
+        testLogin = false;
+        if (loginInput.value.length === 0) {
+            loginHint.textContent = "";
+            return;
+        }
+        fetch(`/reg/${loginInput.value}`)
+            .then(async response => {
+                    if (response.status !== 200) {
+                        _alert("Кажется произошла ошибка :(");
+                    } else {
+                        const value = await response.text();
+                        if (value === "true") {
+                            testLogin = true;
+                            loginHint.textContent = "Этот ник свободен";
+                            loginHint.classList.add("good");
+                            loginHint.classList.remove("bad");
+                        } else {
+                            loginHint.textContent = "Этот ник уже занят";
+                            loginHint.classList.remove("good");
+                            loginHint.classList.add("bad");
+                        }
+                    }
+                },
+                () => {
+                    _alert("Потеряно соединение с сервером :(");
+                });
+    });
+
+    const callback = (e) => {
+        let password = passwordInput.value;
+        let repeatPassword = repeatPasswordInput.value;
+        let name = nameInput.value;
+        let login = loginInput.value;
+
+        let showError = (element, msg) => {
+            element.style = "border:5px solid #f15151;"
+            _alert(msg)
+            setTimeout(() => {
+                element.style = "";
+            }, 500);
+            e.preventDefault();
+        }
+
+        if (login.trim().length <= 3) {
+            showError(login, "Минимальный размер Ника 3 символа");
+        } else if (name.trim().length < 2) {
+            showError(name, "Не заполнено имя");
+        } else if (password.trim().length <= 6) {
+            showError(password, "Минимальный размер парлоя 6 символов");
+        } else if (login.trim().length > 20) {
+            showError(login, "Максимальный размер Ника 10 символов");
+        } else if (name.trim().split(" ").length > 1) {
+            showError(name, "Имя должно быть одним словом");
+        } else if (!testLogin) {
+            showError(login, "Такой ник уже существует");
+        } else if (repeatPassword !== password) {
+            showError(login, "Пароли не совпадают");
+        }
+
+    };
+
+    form.addEventListener("submit", callback);
+    push.addEventListener("submit", callback);
+    push.addEventListener("click", callback);
+</script>
+</html>

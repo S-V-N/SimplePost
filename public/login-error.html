@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Log In</title>
+    <link rel="stylesheet" href="public/style/style.css">
+    <script src="https://kit.fontawesome.com/e779950260.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrapper login_wrapper">
+    <div class="login">
+        <form class="form" method="post">
+            <p id="login_hint" class="hint bad">Неверный логин или пароль</p>
+            <div class="form_line">
+                <label for="form_username">
+                    <i class="fa-solid fa-user"></i>
+                </label>
+                <input type="text" id="form_username" class="form_input form_username" name="login"
+                       placeholder="Пользователь">
+            </div>
+            <div class="form_line">
+                <label for="form_password">
+                    <i class="fa-solid fa-key"></i>
+                </label>
+                <input type="password" id="form_password" class="form_input form_password" name="password"
+                       placeholder="Пароль">
+            </div>
+            <button class="btn form_btn" id="form_btn" type="submit">Войти</button>
+        </form>
+        <div class="reg-link">
+            Нет аккаунта ? <a  href="/reg">Регистрация</a>
+        </div>
+        <div class="form_create-by create-by">
+            <span class="create-by_a">Пет-проект SimplePost</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
